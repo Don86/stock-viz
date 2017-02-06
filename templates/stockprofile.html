@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8' />
+      <meta />
+      <style>{% include 'style.css' %}</style>
+
+    <title>Stock Profiler</title>
+
+    {{ js_resources|indent(4)|safe }}
+
+    {{ css_resources|indent(4)|safe }}
+
+    {{ plot_script|indent(4)|safe }}
+
+      {{ R_value|indent(4)|safe }}
+
+  </head>
+
+  <body>
+    <h1>Stock Profile</h1>
+    <p> Select settings: </p>
+    <form name="color_button" method='GET'>
+        <font face="Helvetica Neue" size="1.0em">
+            Ticker
+        </font>
+        <select name="ticker" >
+            <option value="^GSPC">^GSPC</option>
+            <option value="GLD">GLD</option>
+            <option value="BRK.B">BRKB</option>
+            <!--<option selected="selected" value="^GSPC">^GSPC</option>-->
+        </select>
+        <!--<br>
+        From:
+        <input type="text" name="_from" value="{{ _from }}">
+        <br>
+        To:
+        <input type="text" name="to" value="{{ to }}">
+        <br>-->
+        <button type="submit">Submit</button>
+    </form>
+    {{ plot_div|indent(4)|safe }}
+    <p> Annualized return:
+        {% print('Hello world!') %}
+        <button onclick="alert(R_str)" ></button>
+    </p>
+  </body>
+</html>
