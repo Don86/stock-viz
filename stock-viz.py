@@ -20,7 +20,7 @@ from bokeh.models.widgets import PreText, Select
 import pandas as pd
 import pandas_datareader.data as web
 import datetime as dt
-
+from decimal import Decimal
 import numpy as np
 
 app = flask.Flask(__name__)
@@ -96,8 +96,14 @@ def stock_profile():
     # Pull dates and closing prices from the df as arrays
     S_data = np.array(df['Close'])
     S_dates = np.array(df['Date'])
+    S_0 = float(df.head(1)['Close'])  # assuming no slippage
+    S_T = float(df.tail(1)['Close'])
+    dt = 10
+    
     # Compute annualized return
-
+    r = simple_return(S_T, S_0)
+    R = round(Decimal(annualized_return(r, dt)),3)
+    
     # Create graph
     # source = ColumnDataSource(data=dict(date=[], x=[]))
     # source_static = ColumnDataSource(data=dict(date=[], x=[]))
@@ -116,11 +122,6 @@ def stock_profile():
 
     script, div = components(fig)
 
-    # Compute simple and annualized return, r and R
-    # do a dummy first
-    r = 1.234
-    R = 0.123456
-
     html = flask.render_template(
         'stockprofile.html',
         plot_script=script,
@@ -128,58 +129,8 @@ def stock_profile():
         js_resources=js_resources,
         css_resources=css_resources,
         ticker=ticker,
-        R_value=R,
-        r_value=r
-    )
-
-    return encode_utf8(html)
-
-@app.route("/profile/<ticker>")
-def profile(ticker):
-
-    args = flask.request.args
-
-    ticker1 = Select(value='^GSPC', options=ticker_ls)
-
-    # Pull dates and closing prices from the df as arrays
-    S_data = np.array(df['Close'])
-    S_dates = np.array(df['Date'])
-    # Compute annualized return
-
-    # Create graph
-    # source = ColumnDataSource(data=dict(date=[], x=[]))
-    # source_static = ColumnDataSource(data=dict(date=[], x=[]))
-    tools = 'pan, wheel_zoom, reset, xbox_select'
-
-    fig = figure(title=ticker,
-                 plot_width=600,
-                 plot_height=400,
-                 tools=tools,
-                 x_axis_type='datetime',
-                 active_drag="xbox_select")
-    fig.line(S_dates, S_data)
-
-    js_resources = INLINE.render_js()
-    css_resources = INLINE.render_css()
-
-    script, div = components(fig)
-
-    # Compute simple and annualized return, r and R
-    # do a dummy first
-    r = 1.234
-    R = 0.123456
-
-    R_str = str(R)
-
-    html = flask.render_template(
-        'stockprofile.html',
-        plot_script=script,
-        plot_div=div,
-        js_resources=js_resources,
-        css_resources=css_resources,
-        ticker=ticker,
-        R_value=R_str,
-        #r_value=str(r)[:4]
+        R_val = R,
+        n_periods = dt
     )
 
     return encode_utf8(html)
