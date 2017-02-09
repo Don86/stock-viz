@@ -6,42 +6,41 @@
       <style>{% include 'style.css' %}</style>
 
     <title>Stock Profiler</title>
-
-    {{ js_resources|indent(4)|safe }}
-
-    {{ css_resources|indent(4)|safe }}
-
-    {{ plot_script|indent(4)|safe }}
-
-      {{ R_value|indent(4)|safe }}
-
+      {{ js_resources|indent(4)|safe }}
+      {{ css_resources|indent(4)|safe }}
+      {{ plot_script|indent(4)|safe }}
   </head>
+  <header><h1>Stock Profile</h1></header>
 
   <body>
-    <h1>Stock Profile</h1>
-    <p> Select settings: </p>
     <form name="color_button" method='GET'>
-        <font face="Helvetica Neue" size="1.0em">
+        <font face="Helvetica Neue" size="1.8em">
             Ticker
         </font>
-        <select name="ticker" >
-            <option value="^GSPC">^GSPC</option>
+
+        <select name="ticker" ONCHANGE="location = this.options[this.selectedIndex].value;">
+            <option value="#">Select</option>
+            <option value="^GSPC">SNP 500</option>
+            <option value="^FTSE">FTSE 100</option>
             <option value="GLD">GLD</option>
-            <option value="BRK.B">BRKB</option>
+            <option value="BRK.B">BRK.B</option>
             <!--<option selected="selected" value="^GSPC">^GSPC</option>-->
         </select>
+
         <!--<br>
         From:
         <input type="text" name="_from" value="{{ _from }}">
         <br>
         To:
         <input type="text" name="to" value="{{ to }}">
-        <br>-->
+        <br>
         <button type="submit">Submit</button>
+        -->
     </form>
     {{ plot_div|indent(4)|safe }}
-    <p> Annualized return:
-        Annualized return: {{ R_val }}
+    <p> Annualized return: {{ R_val }}
     </p>
   </body>
+
+<footer></footer>
 </html>
