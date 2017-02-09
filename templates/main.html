@@ -1,0 +1,31 @@
+<!--landing page, I think used only once.-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8' />
+      <meta />
+      <style>{% include 'style.css' %}</style>
+
+    <title>Stock Profiler</title>
+  </head>
+  <header><h1>Stock Profile</h1></header>
+
+  <body>
+    <form name="color_button" method='GET'>
+        <font face="Helvetica Neue" size="1.8em">
+            Ticker
+        </font>
+
+        <select name="ticker" ONCHANGE="location = this.options[this.selectedIndex].value;">
+            <option value="#">Select</option>
+            <option value="^GSPC">SNP 500</option>
+            <option value="^FTSE">FTSE 100</option>
+            <option value="GLD">GLD</option>
+            <option value="BRK.B">BRK.B</option>
+        </select>
+
+  </body>
+
+<footer></footer>
+</html>
